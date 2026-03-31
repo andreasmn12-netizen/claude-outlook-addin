@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Mail Assistant</title>
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="taskpane.css" />
+</head>
+<body>
+  <div id="app">
+    <header>
+      <div class="logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="12" fill="#CC785C"/>
+          <text x="12" y="17" text-anchor="middle" fill="white" font-size="13" font-weight="bold" font-family="serif">C</text>
+        </svg>
+        <span>Claude Mail Assistant</span>
+      </div>
+    </header>
+    <main>
+      <div class="section">
+        <label for="tone">Tone</label>
+        <select id="tone">
+          <option value="professional and polished">Professional</option>
+          <option value="friendly and warm">Friendly</option>
+          <option value="formal and concise">Formal</option>
+          <option value="clear and concise">Concise</option>
+          <option value="persuasive and confident">Persuasive</option>
+        </select>
+      </div>
+      <div class="section">
+        <label for="instructions">Extra instructions <span class="optional">(optional)</span></label>
+        <textarea id="instructions" rows="2" placeholder="e.g. Make it shorter, add a call to action..."></textarea>
+      </div>
+      <button id="improveBtn" class="btn-primary" onclick="improveEmail()">
+        <span id="btnText">Improve Email</span>
+taskpane.html      </button>
+      <div id="resultSection" class="hidden">
+        <div class="divider"></div>
+        <div class="result-header">
+          <label>Improved version</label>
+          <button class="btn-icon" onclick="copyToClipboard()" title="Copy">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            Copy
+          </button>
+        </div>
+        <textarea id="resultText" rows="10" class="result-box" spellcheck="false"></textarea>
+        <button id="replaceBtn" class="btn-success" onclick="replaceEmail()">Replace email with this</button>
+        <p id="replaceMsg" class="msg hidden"></p>
+      </div>
+      <div id="errorSection" class="hidden">
+        <p id="errorMsg" class="error-msg"></p>
+      </div>
+    </main>
+  </div>
+  <script src="taskpane.js"></script>
+</body>
+</html>
