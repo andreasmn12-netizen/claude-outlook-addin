@@ -34,8 +34,9 @@
         <textarea id="instructions" rows="2" placeholder="e.g. Make it shorter, add a call to action..."></textarea>
       </div>
       <button id="improveBtn" class="btn-primary" onclick="improveEmail()">
+        <span id="btnSpinner" class="spinner hidden"></span>
         <span id="btnText">Improve Email</span>
-taskpane.html      </button>
+      </button>
       <div id="resultSection" class="hidden">
         <div class="divider"></div>
         <div class="result-header">
@@ -54,6 +55,15 @@ taskpane.html      </button>
       </div>
       <div id="errorSection" class="hidden">
         <p id="errorMsg" class="error-msg"></p>
+      </div>
+      <div class="divider"></div>
+      <div class="section">
+        <label for="apiKeyInput">API Key <span class="optional">(saved locally)</span></label>
+        <div class="api-key-row">
+          <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." />
+          <button class="btn-save" onclick="saveApiKey()">Save</button>
+        </div>
+        <p id="apiKeyMsg" class="msg hidden"></p>
       </div>
     </main>
   </div>

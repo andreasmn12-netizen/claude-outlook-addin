@@ -186,3 +186,40 @@ select:focus, textarea:focus {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .hidden { display: none !important; }
+
+.api-key-row {
+  display: flex;
+  gap: 6px;
+}
+
+.api-key-row input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #1a1a1a;
+  background: #fff;
+}
+
+.api-key-row input:focus {
+  outline: none;
+  border-color: #CC785C;
+  box-shadow: 0 0 0 2px rgba(204, 120, 92, 0.12);
+}
+
+.btn-save {
+  padding: 8px 14px;
+  background: #CC785C;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.btn-save:hover { background: #b86a50; }
