@@ -11,59 +11,90 @@
   <div id="app">
     <header>
       <div class="logo">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="12" r="12" fill="#CC785C"/>
           <text x="12" y="17" text-anchor="middle" fill="white" font-size="13" font-weight="bold" font-family="serif">C</text>
         </svg>
-        <span>Claude Mail Assistant</span>
+        <span>Claude Mail</span>
       </div>
-    </header>
-    <main>
-      <div class="section">
-        <label for="tone">Tone</label>
-        <select id="tone">
-          <option value="professional and polished">Professional</option>
-          <option value="friendly and warm">Friendly</option>
-          <option value="formal and concise">Formal</option>
-          <option value="clear and concise">Concise</option>
-          <option value="persuasive and confident">Persuasive</option>
-        </select>
-      </div>
-      <div class="section">
-        <label for="instructions">Extra instructions <span class="optional">(optional)</span></label>
-        <textarea id="instructions" rows="2" placeholder="e.g. Make it shorter, add a call to action..."></textarea>
-      </div>
-      <button id="improveBtn" class="btn-primary" onclick="improveEmail()">
-        <span id="btnSpinner" class="spinner hidden"></span>
-        <span id="btnText">Improve Email</span>
+      <button class="btn-settings" onclick="toggleSettings()" title="API Key settings" id="settingsBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
       </button>
-      <div id="resultSection" class="hidden">
-        <div class="divider"></div>
-        <div class="result-header">
-          <label>Improved version</label>
-          <button class="btn-icon" onclick="copyToClipboard()" title="Copy">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-            Copy
-          </button>
-        </div>
-        <textarea id="resultText" rows="10" class="result-box" spellcheck="false"></textarea>
-        <button id="replaceBtn" class="btn-success" onclick="replaceEmail()">Replace email with this</button>
-        <p id="replaceMsg" class="msg hidden"></p>
-      </div>
-      <div id="errorSection" class="hidden">
-        <p id="errorMsg" class="error-msg"></p>
-      </div>
-      <div class="divider"></div>
-      <div class="section">
-        <label for="apiKeyInput">API Key <span class="optional">(saved locally)</span></label>
+    </header>
+
+    <!-- Settings panel -->
+    <div id="settingsPanel" class="settings-panel hidden">
+      <div class="settings-inner">
+        <p class="settings-label">Anthropic API Key</p>
+        <p class="settings-hint" id="keyStatus">Not saved yet</p>
         <div class="api-key-row">
           <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." />
           <button class="btn-save" onclick="saveApiKey()">Save</button>
         </div>
-        <p id="apiKeyMsg" class="msg hidden"></p>
+        <p id="apiKeyMsg" class="msg-success hidden">Saved!</p>
+        <p class="settings-hint">Your key is stored only in this browser. It is never sent to GitHub or anyone else.</p>
+      </div>
+    </div>
+
+    <main>
+      <div class="card">
+        <div class="field">
+          <label for="tone">Tone</label>
+          <select id="tone">
+            <option value="professional and polished">Professional</option>
+            <option value="friendly and warm">Friendly</option>
+            <option value="formal and concise">Formal</option>
+            <option value="clear and concise">Concise</option>
+            <option value="persuasive and confident">Persuasive</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="instructions">Extra instructions <span class="optional">(optional)</span></label>
+          <textarea id="instructions" rows="2" placeholder="e.g. Make it shorter, add a call to action..."></textarea>
+        </div>
+        <div class="btn-row">
+          <button id="improveBtn" class="btn-action btn-orange" onclick="improveEmail()">
+            <span id="improveSpinner" class="spinner hidden"></span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <span id="improveText">Improve Email</span>
+          </button>
+          <button id="replyBtn" class="btn-action btn-blue" onclick="suggestReply()">
+            <span id="replySpinner" class="spinner hidden"></span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
+            <span id="replyText">Suggest Reply</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="resultSection" class="hidden">
+        <div class="result-card">
+          <div class="result-header">
+            <span id="resultLabel" class="result-label">Improved version</span>
+            <button class="btn-icon" onclick="copyToClipboard()" title="Copy">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <textarea id="resultText" rows="10" class="result-box" spellcheck="false"></textarea>
+          <button id="replaceBtn" class="btn-replace" onclick="replaceEmail()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+            Replace email with this
+          </button>
+          <p id="replaceMsg" class="msg-success hidden">Email replaced!</p>
+        </div>
+      </div>
+
+      <div id="errorSection" class="hidden">
+        <div class="error-card">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <p id="errorMsg"></p>
+        </div>
       </div>
     </main>
   </div>
